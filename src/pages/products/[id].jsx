@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import Image from 'next/image';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
@@ -14,7 +13,7 @@ const validationSchema = yup.object().shape({
 });
 
 export default function ProductPage({ product = {}, relatedProducts = [] }) {
-    const handleSubmit = useCallback(async (values, { setSubmitting, setErrors, resetForm }) => {
+    const handleSubmit = async (values, { setSubmitting, setErrors, resetForm }) => {
         try {
             const resp = await createPreOrder({
                 ...values,
@@ -31,7 +30,7 @@ export default function ProductPage({ product = {}, relatedProducts = [] }) {
         }
 
         setSubmitting(false);
-    }, [product.id]);
+    };
 
     return <div className="mt-9">
         <ToastContainer

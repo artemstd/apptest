@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import ProductsList from '../components/products/List';
 import { fetchList as fetchListProducts } from '../api/products';
@@ -7,11 +7,11 @@ export default function IndexPage({ startProducts = [], startTotal = 0 }) {
   const [products, setProducts] = useState(startProducts);
   const [total, setTotal] = useState(startTotal);
 
-  const loadMore = useCallback(async () => {
+  const loadMore = async () => {
     const res = await fetchListProducts(products.length);
     setProducts(prevValue => prevValue.concat(res.data));
     setTotal(res.meta.total);
-  }, [products]);
+  };
 
   return <>
     <h1 className="text-center mt-36 sm:mt-48">Star Wars<br />Figures</h1>

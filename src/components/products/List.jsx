@@ -6,6 +6,6 @@ export default function List({ products = []}) {
             {products.map((item) => <ProductsItem key={item.id} product={item} />)}
         </div>
     } else {
-        return <p>No products</p>
+        return <div className="text-center">No products</div>
     }
 }
