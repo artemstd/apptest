@@ -14,7 +14,6 @@
     "react-dom": "latest",
     "react-infinite-scroll-component": "^6.1.0",
     "react-toastify": "^7.0.4",
-    "sass": "^1.34.1",
     "yup": "^0.32.9"
   },
   "devDependencies": {
