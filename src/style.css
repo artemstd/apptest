@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Spartan:wght@500;700&display=swap');
+
+body {
+    @apply font-spartan
+        min-w-body
+        px-4 md:px-6 lg:px-10 xl:px-40
+        pt-6 sm:pt-8
+        pb-4 md:pb-6 lg:pb-10 xl:pb-40
+}
+
+main {
+    @apply max-w-main mx-auto
+}
+
+@layer components {
+    .heading-1 {
+        @apply font-bold text-black text-6xl sm:text-7xl xl:text-8xl
+    }
+
+    .heading-2 {
+        @apply font-bold text-black text-3xl sm:text-6xl
+    }
+
+    .heading-3 {
+        @apply font-semibold text-black text-2xl sm:text-3xl xl:text-4xl
+    }
+
+    .paragraph {
+        @apply font-medium text-black text-base-xs sm:text-base-sm
+    }
+
+    .button {
+        @apply inline-block text-center cursor-pointer rounded-full bg-black shadow-btn text-white text-base-sm sm:text-2xl px-6 py-4 sm:px-8 sm:py-5
+    }
+
+    .block-gray {
+        @apply rounded-4xl bg-purple-100 bg-opacity-75
+    }
+}

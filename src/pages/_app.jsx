@@ -1,9 +1,15 @@
-import '../styles/globals.css';
-import Layout from '../components/layouts/Default';
+import '../style.css';
+import Template from '../components/templates/Default';
 
-export default function App({ Component, pageProps = {} }) {
+const App = ({ Component, pageProps }) => {
     const { pageTitle } = pageProps;
-    return <Layout pageTitle={pageTitle}>
+    return <Template pageTitle={pageTitle}>
         <Component {...pageProps} />
-    </Layout>
-}
+    </Template>;
+};
+
+App.defaultProps = {
+    pageProps: {}
+};
+
+export default App;

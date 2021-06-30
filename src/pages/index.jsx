@@ -1,36 +1,44 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import ProductsList from '../components/products/List';
+import Heading from '../components/atoms/typography/Heading';
+import ProductList from '../components/organisms/product/List';
 import { fetchList as fetchListProducts } from '../api/products';
 
-export default function IndexPage({ startProducts = [], startTotal = 0 }) {
+const IndexPage = ({ startProducts, startTotal }) => {
   const [products, setProducts] = useState(startProducts);
   const [total, setTotal] = useState(startTotal);
 
-  const loadMore = async () => {
+  const loadMore = useCallback(async () => {
     const res = await fetchListProducts(products.length);
     setProducts(prevValue => prevValue.concat(res.data));
     setTotal(res.meta.total);
-  };
+  }, [products.length]);
 
   return <>
-    <h1 className="text-center mt-36 sm:mt-48">Star Wars<br />Figures</h1>
-    <h2 className="
+    <Heading size={1} className="text-center mt-36 sm:mt-48">Star Wars<br />Figures</Heading>
+    <Heading size={3} className="
       text-center
-      mt-8 mx-auto mb-36 sm:mb-48 xl:mb-36
-      w-11/12 sm:w-5/6 sm:mt-12 md:w-3/4 lg:w-1/2
+      mt-8 sm:mt-12 mx-auto mb-36 sm:mb-48 xl:mb-36
+      w-11/12 sm:w-5/6 md:w-3/4 lg:w-1/2
       ">
       Find the latest products for the biggest fans of the iconic saga.
-    </h2>
+    </Heading>
     <InfiniteScroll
       dataLength={products.length}
       hasMore={total > products.length}
       next={loadMore}
       >
-        <ProductsList products={products} />
+        <ProductList products={products} />
     </InfiniteScroll>
   </>;
-}
+};
+
+IndexPage.defaultProps = {
+  startProducts: [],
+  startTotal: 0
+};
+
+export default IndexPage;
 
 export async function getServerSideProps() {
   const res = await fetchListProducts();
