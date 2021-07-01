@@ -41,6 +41,10 @@ main {
         @apply text-xs sm:text-2xl bg-white px-6 py-5 sm:px-8 sm:py-6 rounded-full border-2 border-gray-300
     }
 
+    .error-message {
+        @apply text-red-500
+    }
+
     .block-gray {
         @apply rounded-4xl bg-purple-100 bg-opacity-75
     }

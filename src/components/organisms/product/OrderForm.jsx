@@ -1,10 +1,11 @@
 import { useCallback } from 'react';
-import { Formik, Form, ErrorMessage } from 'formik';
+import { Formik, Form } from 'formik';
 import * as yup from 'yup';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Button from '../../atoms/button/Button';
-import TextField from '../../atoms/field/TextField';
+import TextField from '../../atoms/form/TextField';
+import ErrMessage from '../../atoms/form/ErrMessage';
 import { create as createPreOrder } from '../../../api/pre-orders';
 
 const validationSchema = yup.object().shape({
@@ -58,7 +59,7 @@ const OrderForm = ({ productId, className }) => {
                         <TextField type="email" name="email" className="sm:pr-72 w-full" placeholder="Email" />
                         <Button className="w-full sm:w-auto mt-1 sm:mt-0 sm:absolute sm:inset-y-1.5 sm:right-1.5" disabled={isSubmitting} onClick={handleSubmit}>Pre-order Now</Button>
                     </div>
-                    <ErrorMessage className="text-red-500 mt-1 lg:ml-8" name="email" component="div" />
+                    <ErrMessage name="email" component="div" className="mt-1 lg:ml-8" />
                 </Form>
             )}
         </Formik>
