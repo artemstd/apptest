@@ -10,7 +10,7 @@ const IndexPage = ({ startProducts, startTotal }) => {
 
   const loadMore = useCallback(async () => {
     const res = await fetchListProducts(products.length);
-    setProducts(prevValue => prevValue.concat(res.data));
+    setProducts(prevValue => [...prevValue, ...res.data]);
     setTotal(res.meta.total);
   }, [products.length]);
 

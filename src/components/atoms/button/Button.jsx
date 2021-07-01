@@ -8,7 +8,6 @@ const Button = forwardRef(({ className, href, onClick, children }, ref) => {
 });
 
 Button.defaultProps = {
-    className: '',
     href: '#'
 };
 

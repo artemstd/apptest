@@ -5,8 +5,7 @@ const Heading = ({size, className, children}) => {
 };
 
 Heading.defaultProps = {
-    size: 1,
-    className: ''
+    size: 1
 };
 
 export default Heading;

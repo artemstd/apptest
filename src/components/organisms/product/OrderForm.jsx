@@ -1,9 +1,10 @@
 import { useCallback } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Button from '../../atoms/button/Button';
+import TextField from '../../atoms/field/TextField';
 import { create as createPreOrder } from '../../../api/pre-orders';
 
 const validationSchema = yup.object().shape({
@@ -53,8 +54,10 @@ const OrderForm = ({ productId, className }) => {
             >
             {({ isSubmitting, handleSubmit }) => (
                 <Form className={className}>
-                    <Field type="email" name="email" className="sm:pr-72 w-full text-xs sm:text-2xl bg-white px-6 py-5 sm:px-8 sm:py-6 rounded-full border-2 border-gray-300" placeholder="Email" />
-                    <Button className="w-full sm:w-auto mt-1 sm:mt-0 sm:absolute inset-y-1.5 right-1.5" disabled={isSubmitting} onClick={handleSubmit}>Pre-order Now</Button>
+                    <div className="sm:relative">
+                        <TextField type="email" name="email" className="sm:pr-72 w-full" placeholder="Email" />
+                        <Button className="w-full sm:w-auto mt-1 sm:mt-0 sm:absolute sm:inset-y-1.5 sm:right-1.5" disabled={isSubmitting} onClick={handleSubmit}>Pre-order Now</Button>
+                    </div>
                     <ErrorMessage className="text-red-500 mt-1 lg:ml-8" name="email" component="div" />
                 </Form>
             )}

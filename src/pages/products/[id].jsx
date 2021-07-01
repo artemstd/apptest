@@ -15,7 +15,7 @@ const ProductPage = ({ product, relatedProducts }) => {
             <div className="text-center lg:text-left pt-5 sm:pt-14 md:pt-28 px-2.5 mx-8 md:mx-16 lg:mx-32 xl:pl-0 xl:ml-0">
                 <Heading size={1} className="text-2xl sm:text-7xl pt-3 pb-8">{product.name}</Heading>
                 <Paragraph className="sm:text-2xl mb-8 sm:mb-16">{product.desc}</Paragraph>
-                <OrderForm productId={product.id} className="lg:w-2/3 xl:w-11/12 relative" />
+                <OrderForm productId={product.id} className="lg:w-2/3 xl:w-11/12" />
             </div>
         </BlockGray>
         <Heading size={2} className="mt-16 sm:mt-20 md:mt-24 mb-4 sm:mb-8 text-center sm:text-left">Related Figures</Heading>

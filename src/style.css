@@ -37,6 +37,10 @@ main {
         @apply inline-block text-center cursor-pointer rounded-full bg-black shadow-btn text-white text-base-sm sm:text-2xl px-6 py-4 sm:px-8 sm:py-5
     }
 
+    .text-field {
+        @apply text-xs sm:text-2xl bg-white px-6 py-5 sm:px-8 sm:py-6 rounded-full border-2 border-gray-300
+    }
+
     .block-gray {
         @apply rounded-4xl bg-purple-100 bg-opacity-75
     }
