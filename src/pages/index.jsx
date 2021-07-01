@@ -4,15 +4,18 @@ import Heading from '../components/atoms/typography/Heading';
 import ProductList from '../components/organisms/product/List';
 import { fetchList as fetchListProducts } from '../api/products';
 
-const IndexPage = ({ startProducts, startTotal }) => {
+const IndexPage = ({ startProducts, startTotalPages }) => {
   const [products, setProducts] = useState(startProducts);
-  const [total, setTotal] = useState(startTotal);
+  const [totalPages, setTotalPages] = useState(startTotalPages);
+  const [page, setPage] = useState(1);
 
   const loadMore = useCallback(async () => {
-    const res = await fetchListProducts(products.length);
+    const nextPage = page + 1;
+    const res = await fetchListProducts(nextPage);
     setProducts(prevValue => [...prevValue, ...res.data]);
-    setTotal(res.meta.total);
-  }, [products.length]);
+    setTotalPages(res.meta.totalPages);
+    setPage(nextPage);
+  }, [page]);
 
   return <>
     <Heading size={1} className="text-center mt-36 sm:mt-48">Star Wars<br />Figures</Heading>
@@ -25,7 +28,7 @@ const IndexPage = ({ startProducts, startTotal }) => {
     </Heading>
     <InfiniteScroll
       dataLength={products.length}
-      hasMore={total > products.length}
+      hasMore={totalPages > page}
       next={loadMore}
       >
         <ProductList products={products} />
@@ -35,7 +38,7 @@ const IndexPage = ({ startProducts, startTotal }) => {
 
 IndexPage.defaultProps = {
   startProducts: [],
-  startTotal: 0
+  startTotalPages: 0
 };
 
 export default IndexPage;
@@ -47,7 +50,7 @@ export async function getServerSideProps() {
     props: {
       pageTitle: 'Index page',
       startProducts: res.data,
-      startTotal: res.meta.total
+      startTotalPages: res.meta.totalPages
     }
   };
 }

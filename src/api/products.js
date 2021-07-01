@@ -1,7 +1,7 @@
 import client from './client';
 
-export const fetchList = (offset = 0) => {
-    return client.get(`/api/products?_offset=${offset}`);
+export const fetchList = (page = 1) => {
+    return client.get(`/api/products?page=${page}`);
 };
 
 export const fetchOne = (id = 0) => {

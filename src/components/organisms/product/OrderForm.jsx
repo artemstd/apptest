@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Button from '../../atoms/button/Button';
 import TextField from '../../atoms/form/TextField';
 import ErrMessage from '../../atoms/form/ErrMessage';
-import { create as createPreOrder } from '../../../api/pre-orders';
+import { create as createPreOrder } from '../../../api/pre-order';
 
 const validationSchema = yup.object().shape({
     email: yup.string().email('Invalid email adress').required('Required email')

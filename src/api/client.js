@@ -1,4 +1,4 @@
-const apiUrl = process.env.NODE_ENV === 'production' ? 'https://apptest-lemon.vercel.app' : 'http://localhost:3000';
+const apiUrl = 'https://react-test-starwars.vercel.app';
 
 const client = async (url, { method = 'GET', body, ...otherConfig } = {}) => {
     const config = {
