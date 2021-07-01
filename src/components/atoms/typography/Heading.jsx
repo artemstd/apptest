@@ -1,7 +1,6 @@
-import classnames from 'classnames';
-
 const Heading = ({size, className, children}) => {
-    return <h1 className={classnames(`heading-${size}`, className)}>{children}</h1>
+    const TagName = `h${size}`;
+    return <TagName className={className}>{children}</TagName>
 };
 
 Heading.defaultProps = {

@@ -16,25 +16,25 @@
     main {
         @apply max-w-main mx-auto
     }
-}
 
-@layer components {
-    .heading-1 {
+    h1 {
         @apply font-bold text-black text-6xl sm:text-7xl xl:text-8xl
     }
 
-    .heading-2 {
+    h2 {
         @apply font-bold text-black text-3xl sm:text-6xl
     }
 
-    .heading-3 {
+    h3 {
         @apply font-semibold text-black text-2xl sm:text-3xl xl:text-4xl
     }
 
-    .paragraph {
+    p {
         @apply font-medium text-black text-base-xs sm:text-base-sm
     }
+}
 
+@layer components {
     .button {
         @apply inline-block text-center cursor-pointer rounded-full bg-black shadow-btn text-white text-base-sm sm:text-2xl px-6 py-4 sm:px-8 sm:py-5
     }
