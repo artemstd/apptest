@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
-import Button from '../../atoms/button/Button';
+import LinkNext from 'next/link';
+import Link from '../../atoms/link/Link';
 import Heading from '../../atoms/typography/Heading';
 import Paragraph from '../../atoms/typography/Paragraph';
 import BlockGray from '../../wrapper/BlockGray';
@@ -12,9 +12,9 @@ const Item = memo(({ product }) => {
         <Heading size={3} className="mt-8 text-3xl sm:text-4xl">{product.name}</Heading>
         <Paragraph className="mt-4 text-opacity-70 flex-1">{product.shortDescription}</Paragraph>
         <p className="mt-4 sm:mt-6">
-            <Link href={`/products/${product.id}`} passHref>
-                <Button>Buy ${product.price}</Button>
-            </Link>
+            <LinkNext href={`/products/${product.id}`} passHref>
+                <Link isButtonStyle>Buy ${product.price}</Link>
+            </LinkNext>
         </p>
     </BlockGray>;
 });

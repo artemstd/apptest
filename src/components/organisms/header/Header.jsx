@@ -1,13 +1,13 @@
-import Link from 'next/link';
+import LinkNext from 'next/link';
 import Logo from '../../atoms/icon/Logo';
 
 const Header = () => {
     return <header className="flex justify-center">
-        <Link href="/">
+        <LinkNext href="/">
             <a>
                 <Logo />
             </a>
-        </Link>
+        </LinkNext>
     </header>;
 };
 

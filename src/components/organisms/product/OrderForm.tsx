@@ -16,7 +16,7 @@ const OrderForm = ({ productId, className }) => {
     const handleSubmit = useCallback(async (values, { setSubmitting, setErrors, resetForm }) => {
         try {
             if (!productId) {
-                throw new Error({error: 'No product ID'});
+                throw new Error('No product ID');
             }
 
             const resp = await createPreOrder({
@@ -53,11 +53,11 @@ const OrderForm = ({ productId, className }) => {
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
             >
-            {({ isSubmitting, handleSubmit }) => (
+            {({ isSubmitting }) => (
                 <Form className={className}>
                     <div className="sm:relative">
                         <TextField type="email" name="email" className="sm:pr-72 w-full" placeholder="Email" />
-                        <Button className="w-full sm:w-auto mt-1 sm:mt-0 sm:absolute sm:inset-y-1.5 sm:right-1.5" disabled={isSubmitting} onClick={handleSubmit}>Pre-order Now</Button>
+                        <Button className="w-full sm:w-auto mt-1 sm:mt-0 sm:absolute sm:inset-y-1.5 sm:right-1.5" disabled={isSubmitting}>Pre-order Now</Button>
                     </div>
                     <ErrMessage name="email" component="div" className="mt-1 lg:ml-8" />
                 </Form>
