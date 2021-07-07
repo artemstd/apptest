@@ -1,7 +1,12 @@
+import { FC } from 'react';
 import Head from 'next/head';
 import Header from '../organisms/header/Header';
 
-const Default = ({ pageTitle, children }) => {
+interface IDefaultTemplateProps {
+    pageTitle?: string
+}
+
+const Default: FC<IDefaultTemplateProps> = ({ pageTitle, children }) => {
     return <>
         <Head>
             <title>{pageTitle}</title>
@@ -15,7 +20,7 @@ const Default = ({ pageTitle, children }) => {
 };
 
 Default.defaultProps = {
-    pageTitle: ''
+    pageTitle: 'Default page title'
 };
 
 export default Default;
