@@ -1,5 +1,5 @@
-import { useCallback } from 'react';
-import { Formik, Form } from 'formik';
+import { FC, useCallback } from 'react';
+import { Formik, Form, FormikConfig } from 'formik';
 import * as yup from 'yup';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -12,8 +12,19 @@ const validationSchema = yup.object().shape({
     email: yup.string().email('Invalid email adress').required('Required email')
 });
 
-const OrderForm = ({ productId, className }) => {
-    const handleSubmit = useCallback(async (values, { setSubmitting, setErrors, resetForm }) => {
+interface IOrderFormProps {
+    productId: number,
+    className?: string
+}
+
+interface IFormValues {
+    email: string
+}
+
+type IFormikProps = FormikConfig<IFormValues>;
+
+const OrderForm: FC<IOrderFormProps> = ({ productId, className }) => {
+    const handleSubmit = useCallback<IFormikProps['onSubmit']>(async (values, { setSubmitting, setErrors, resetForm }) => {
         try {
             if (!productId) {
                 throw new Error('No product ID');
@@ -36,6 +47,12 @@ const OrderForm = ({ productId, className }) => {
         setSubmitting(false);
     }, [productId]);
 
+    const formikProps: IFormikProps = {
+        initialValues: {email: ''},
+        validationSchema,
+        onSubmit: handleSubmit
+    }
+
     return <>
         <ToastContainer
             position="top-right"
@@ -48,11 +65,7 @@ const OrderForm = ({ productId, className }) => {
             draggable={false}
             pauseOnHover={false}
             />
-        <Formik
-            initialValues={ {email: ''} }
-            validationSchema={validationSchema}
-            onSubmit={handleSubmit}
-            >
+        <Formik {...formikProps}>
             {({ isSubmitting }) => (
                 <Form className={className}>
                     <div className="sm:relative">
@@ -64,10 +77,6 @@ const OrderForm = ({ productId, className }) => {
             )}
         </Formik>
     </>;
-};
-
-OrderForm.defaultProps = {
-    productId: 0
 };
 
 export default OrderForm;

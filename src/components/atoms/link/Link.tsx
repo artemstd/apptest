@@ -2,7 +2,7 @@ import { forwardRef, LinkHTMLAttributes } from 'react';
 import classnames from 'classnames';
 
 interface ILinkProps extends LinkHTMLAttributes<HTMLAnchorElement> {
-    isButtonStyle: boolean
+    isButtonStyle?: boolean
 }
 
 const Link = forwardRef<HTMLAnchorElement, ILinkProps>(({ isButtonStyle, className, children, ...otherProps }, ref) => {
