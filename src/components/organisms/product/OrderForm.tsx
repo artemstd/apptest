@@ -7,6 +7,7 @@ import Button from '../../atoms/button/Button';
 import TextField from '../../atoms/form/TextField';
 import ErrMessage from '../../atoms/form/ErrMessage';
 import { create as createPreOrder } from '../../../api/pre-order';
+import type { IErrorResponse } from '../../../api/client';
 
 const validationSchema = yup.object().shape({
     email: yup.string().email('Invalid email adress').required('Required email')
@@ -26,10 +27,6 @@ type IFormikProps = FormikConfig<IFormValues>;
 const OrderForm: FC<IOrderFormProps> = ({ productId, className }) => {
     const handleSubmit = useCallback<IFormikProps['onSubmit']>(async (values, { setSubmitting, setErrors, resetForm }) => {
         try {
-            if (!productId) {
-                throw new Error('No product ID');
-            }
-
             const resp = await createPreOrder({
                 ...values,
                 productId
@@ -37,10 +34,11 @@ const OrderForm: FC<IOrderFormProps> = ({ productId, className }) => {
             resetForm();
             toast.success(resp.data.message);
         } catch(exception) {
-            if (exception.errors) {
-                setErrors(exception.errors);
+            const e: IErrorResponse = exception;
+            if (e.errors) {
+                setErrors(e.errors);
             } else {
-                toast.error(exception.error || 'Error has occured');
+                toast.error(e.error || 'Error has occured');
             }
         }
     
