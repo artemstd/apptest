@@ -1,7 +1,9 @@
 import '../style.css';
+import { FC } from 'react';
+import { AppProps } from 'next/app';
 import Template from '../components/templates/Default';
 
-const App = ({ Component, pageProps }) => {
+const App: FC<AppProps> = ({ Component, pageProps }) => {
     const { pageTitle } = pageProps;
     return <Template pageTitle={pageTitle}>
         <Component {...pageProps} />
