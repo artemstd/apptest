@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import ProductItem, { IItem } from './Item';
 
-export type IList = IItem[];
+type IList = IItem[];
 
 interface IListProps {
     products: IList
@@ -18,3 +18,5 @@ const List: FC<IListProps> = ({ products }) => {
 }
 
 export default List;
+
+export type { IItem, IList };

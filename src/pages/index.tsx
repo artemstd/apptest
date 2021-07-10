@@ -1,19 +1,26 @@
-import { useState, useCallback } from 'react';
+import { FC, useState, useCallback } from 'react';
+import { GetServerSideProps } from 'next';
+import { ITemplateProps } from '../components/templates/types';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Heading from '../components/atoms/typography/Heading';
-import ProductList from '../components/organisms/product/List';
+import ProductList, { IList } from '../components/organisms/product/List';
 import { fetchList as fetchListProducts } from '../api/products';
 
-const IndexPage = ({ startProducts, startTotalPages }) => {
+interface IIdexPageProps extends ITemplateProps {
+  startProducts: IList;
+  startTotalPages: number
+};
+
+const IndexPage: FC<IIdexPageProps> = ({ startProducts, startTotalPages }) => {
   const [products, setProducts] = useState(startProducts);
   const [totalPages, setTotalPages] = useState(startTotalPages);
   const [page, setPage] = useState(1);
 
   const loadMore = useCallback(async () => {
     const nextPage = page + 1;
-    const res = await fetchListProducts(nextPage);
-    setProducts(prevValue => [...prevValue, ...res.data]);
-    setTotalPages(res.meta.totalPages);
+    const resp = await fetchListProducts(nextPage);
+    setProducts(prevValue => [...prevValue, ...resp.data]);
+    setTotalPages(resp.meta.totalPages);
     setPage(nextPage);
   }, [page]);
 
@@ -30,27 +37,23 @@ const IndexPage = ({ startProducts, startTotalPages }) => {
       dataLength={products.length}
       hasMore={totalPages > page}
       next={loadMore}
+      loader={null}
       >
         <ProductList products={products} />
     </InfiniteScroll>
   </>;
 };
 
-IndexPage.defaultProps = {
-  startProducts: [],
-  startTotalPages: 0
-};
-
 export default IndexPage;
 
-export async function getServerSideProps() {
-  const res = await fetchListProducts();
+export const getServerSideProps: GetServerSideProps<IIdexPageProps> = async function() {
+  const resp = await fetchListProducts();
 
   return {
     props: {
       pageTitle: 'Index page',
-      startProducts: res.data,
-      startTotalPages: res.meta.totalPages
+      startProducts: resp.data,
+      startTotalPages: resp.meta.totalPages
     }
   };
 }

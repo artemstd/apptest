@@ -1,12 +1,24 @@
+import { FC } from 'react';
+import { GetServerSideProps } from 'next';
+import { ITemplateProps } from '../../components/templates/types';
 import Image from 'next/image';
-import ProductList from '../../components/organisms/product/List';
+import ProductList, { IItem , IList } from '../../components/organisms/product/List';
 import Heading from '../../components/atoms/typography/Heading';
 import Paragraph from '../../components/atoms/typography/Paragraph';
 import BlockGray from '../../components/wrapper/BlockGray';
 import OrderForm from '../../components/organisms/product/OrderForm';
 import { fetchOne as fetchOneProduct } from '../../api/products';
 
-const ProductPage = ({ product, relatedProducts }) => {
+type IProductPageParams = {
+    id: string
+}
+
+interface IProductPageProps extends ITemplateProps {
+    product: IItem,
+    relatedProducts?: IList
+}
+
+const ProductPage: FC<IProductPageProps> = ({ product, relatedProducts }) => {
     return <>
         <BlockGray className="grid grid-cols-1 xl:grid-cols-2 py-10 md:py-20 mt-9">
             <div className="text-center">
@@ -24,15 +36,14 @@ const ProductPage = ({ product, relatedProducts }) => {
 };
 
 ProductPage.defaultProps = {
-    product: {},
     relatedProducts: []
 };
 
 export default ProductPage;
 
-export async function getServerSideProps({ params }) {
+export const getServerSideProps: GetServerSideProps<IProductPageProps, IProductPageParams> = async function({ params }) {
     try {
-        const resp = await fetchOneProduct(params.id);
+        const resp = await fetchOneProduct(+params.id);
         return {
             props: {
                 pageTitle: `Buy "${resp.data.product.name}"`,

@@ -6,7 +6,7 @@ import Heading from '../../atoms/typography/Heading';
 import Paragraph from '../../atoms/typography/Paragraph';
 import BlockGray from '../../wrapper/BlockGray';
 
-export interface IItem {
+interface IItem {
     id: number,
     image: string,
     name: string,
@@ -31,3 +31,5 @@ const Item: FC<IItemProps> = ({ product }) => {
 };
 
 export default memo(Item);
+
+export type { IItem }

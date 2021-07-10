@@ -1,6 +1,5 @@
 import client from './client';
-import { IItem } from '../components/organisms/product/Item';
-import { IList } from '../components/organisms/product/List';
+import { IItem, IList } from '../components/organisms/product/List';
 
 interface IFetchListResponse {
     data: IList,
