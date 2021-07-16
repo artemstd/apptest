@@ -21,7 +21,7 @@ interface IItemProps {
 
 const Item: FC<IItemProps> = ({ product }) => {
     return <BlockGray className="flex flex-col text-center px-10 py-6 sm:py-10">
-        <Image src={`${product.image}`} width={514} height={394} />
+        <Image src={product.image} width={514} height={394} />
         <Heading size={3} className="mt-8 text-3xl sm:text-4xl">{product.name}</Heading>
         <Paragraph className="mt-4 text-opacity-70 flex-1">{product.shortDescription}</Paragraph>
         <LinkNext href={`/products/${product.id}`} passHref>
