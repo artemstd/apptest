@@ -13,16 +13,12 @@ interface IErrorResponse {
     };
 }
 
-const apiUrl: string = 'https://react-test-starwars.vercel.app';
+const apiUrl: string = process.env.API_URL;
 
 const client = async <T>(url: string, { method = 'GET', body, ...otherConfig }: IRequestConfig = {}): Promise<T> => {
     const config: RequestInit = {
         ...otherConfig,
-        method,
-        headers: {
-            'Content-Type': 'application/json',
-            ...otherConfig.headers
-        }
+        method
     };
 
     if (body) {

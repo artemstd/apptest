@@ -22,7 +22,7 @@ const ProductPage: FC<IProductPageProps> = ({ product, relatedProducts }) => {
     return <>
         <BlockGray className="grid grid-cols-1 xl:grid-cols-2 py-10 md:py-20 mt-9">
             <div className="text-center">
-                <Image src={`/img${product.image}`} width={800} height={588} layout="intrinsic" />
+                <Image src={`${product.image}`} width={800} height={588} layout="intrinsic" />
             </div>
             <div className="text-center lg:text-left pt-5 sm:pt-14 md:pt-28 px-2.5 mx-8 md:mx-16 lg:mx-32 xl:pl-0 xl:ml-0">
                 <Heading size={1} className="text-2xl sm:text-7xl pt-3 pb-8">{product.name}</Heading>
