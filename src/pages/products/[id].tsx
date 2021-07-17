@@ -1,5 +1,4 @@
-import { FC } from 'react';
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps, NextPage } from 'next';
 import { ITemplateProps } from '../../components/templates/types';
 import Image from 'next/image';
 import ProductList, { IItem , IList } from '../../components/organisms/product/List';
@@ -18,7 +17,7 @@ interface IProductPageProps extends ITemplateProps {
     relatedProducts?: IList
 }
 
-const ProductPage: FC<IProductPageProps> = ({ product, relatedProducts }) => {
+const ProductPage: NextPage<IProductPageProps> = ({ product, relatedProducts }) => {
     return <>
         <BlockGray className="grid grid-cols-1 xl:grid-cols-2 py-10 md:py-20 mt-9">
             <div className="text-center">

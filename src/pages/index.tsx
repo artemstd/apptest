@@ -1,5 +1,5 @@
-import { FC, useState, useCallback } from 'react';
-import { GetServerSideProps } from 'next';
+import { useState, useCallback } from 'react';
+import { GetServerSideProps, NextPage } from 'next';
 import { ITemplateProps } from '../components/templates/types';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Heading from '../components/atoms/typography/Heading';
@@ -11,7 +11,7 @@ interface IIdexPageProps extends ITemplateProps {
   startTotalPages: number
 };
 
-const IndexPage: FC<IIdexPageProps> = ({ startProducts, startTotalPages }) => {
+const IndexPage: NextPage<IIdexPageProps> = ({ startProducts, startTotalPages }) => {
   const [products, setProducts] = useState(startProducts);
   const [totalPages, setTotalPages] = useState(startTotalPages);
   const [page, setPage] = useState(1);
