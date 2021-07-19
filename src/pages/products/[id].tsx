@@ -1,5 +1,7 @@
 import { GetServerSideProps, NextPage } from 'next';
 import Image from 'next/image';
+import { QueryClient, QueryFunction, useQuery } from 'react-query';
+import { dehydrate } from 'react-query/hydration';
 import ProductList from '../../components/organisms/product/List';
 import Heading from '../../components/atoms/typography/Heading';
 import Paragraph from '../../components/atoms/typography/Paragraph';
@@ -8,7 +10,16 @@ import OrderForm from '../../components/organisms/product/OrderForm';
 import { fetchOne as fetchOneProduct } from '../../api/products';
 import { IProductPageParams, IProductPageProps } from './types';
 
-const ProductPage: NextPage<IProductPageProps> = ({ product, relatedProducts }) => {
+const fetchOneProductQueryFn: QueryFunction<ReturnType<typeof fetchOneProduct> extends Promise<infer T> ? T : any> = ({ queryKey }) => fetchOneProduct(typeof queryKey[1] === 'number' ? queryKey[1] : undefined);
+
+const ProductPage: NextPage<IProductPageProps> = ({ id }) => {
+    const { data, isSuccess } = useQuery(['products', id], fetchOneProductQueryFn);
+
+    if (!isSuccess) {
+        return;
+    }
+    const { product, relatedProducts } = data.data;
+
     return <>
         <BlockGray className="grid grid-cols-1 xl:grid-cols-2 py-10 md:py-20 mt-9">
             <div className="text-center">
@@ -21,23 +32,23 @@ const ProductPage: NextPage<IProductPageProps> = ({ product, relatedProducts }) 
             </div>
         </BlockGray>
         <Heading size={2} className="mt-16 sm:mt-20 md:mt-24 mb-4 sm:mb-8 text-center sm:text-left">Related Figures</Heading>
-        <ProductList products={relatedProducts} />
+        { relatedProducts && <ProductList products={relatedProducts} /> }
     </>;
-};
-
-ProductPage.defaultProps = {
-    relatedProducts: []
 };
 
 export default ProductPage;
 
 export const getServerSideProps: GetServerSideProps<IProductPageProps, IProductPageParams> = async function({ params }) {
     try {
-        const resp = await fetchOneProduct(+params.id);
+        const queryClient = new QueryClient();
+
+        const resp = await queryClient.fetchQuery(['products', +params.id], fetchOneProductQueryFn);
+
         return {
             props: {
                 pageTitle: `Buy "${resp.data.product.name}"`,
-                ...resp.data
+                id: +params.id,
+                queryData: dehydrate(queryClient)
             }
         };
     } catch(exception) {

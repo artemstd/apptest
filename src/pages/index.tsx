@@ -1,5 +1,5 @@
 import { GetServerSideProps, NextPage } from 'next';
-import { QueryClient, useInfiniteQuery } from 'react-query';
+import { QueryClient, QueryFunction, useInfiniteQuery } from 'react-query';
 import { dehydrate } from 'react-query/hydration';
 import { IBasePageProps } from './types';
 import Heading from '../components/atoms/typography/Heading';
@@ -8,7 +8,7 @@ import { fetchList as fetchListProducts } from '../api/products';
 import useIntersectionObserver from '../hooks/useIntersectionObserver';
 import { useRef } from 'react';
 
-const fetchListProductsQueryFn = ({ pageParam = 1 }) => fetchListProducts(pageParam || 1);
+const fetchListProductsQueryFn: QueryFunction<ReturnType<typeof fetchListProducts> extends Promise<infer T> ? T : any> = ({ pageParam = 1 }) => fetchListProducts(pageParam || 1);
 
 const IndexPage: NextPage<IBasePageProps> = () => {
   const loadMoreRef = useRef();

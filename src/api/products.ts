@@ -11,7 +11,7 @@ interface IFetchListResponse {
 interface IFetchOneResponse {
     data: {
         product: IItem,
-        relatedProducts: IList
+        relatedProducts?: IList
     }
 }
 
