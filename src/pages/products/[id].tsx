@@ -1,21 +1,12 @@
 import { GetServerSideProps, NextPage } from 'next';
-import { ITemplateProps } from '../../components/templates/types';
 import Image from 'next/image';
-import ProductList, { IItem , IList } from '../../components/organisms/product/List';
+import ProductList from '../../components/organisms/product/List';
 import Heading from '../../components/atoms/typography/Heading';
 import Paragraph from '../../components/atoms/typography/Paragraph';
 import BlockGray from '../../components/wrapper/BlockGray';
 import OrderForm from '../../components/organisms/product/OrderForm';
 import { fetchOne as fetchOneProduct } from '../../api/products';
-
-type IProductPageParams = {
-    id: string
-}
-
-interface IProductPageProps extends ITemplateProps {
-    product: IItem,
-    relatedProducts?: IList
-}
+import { IProductPageParams, IProductPageProps } from './types';
 
 const ProductPage: NextPage<IProductPageProps> = ({ product, relatedProducts }) => {
     return <>
