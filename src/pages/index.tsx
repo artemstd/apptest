@@ -1,28 +1,27 @@
-import { useState, useCallback } from 'react';
 import { GetServerSideProps, NextPage } from 'next';
-import { ITemplateProps } from '../components/templates/types';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import { QueryClient, useInfiniteQuery } from 'react-query';
+import { dehydrate } from 'react-query/hydration';
+import { IBasePageProps } from './types';
 import Heading from '../components/atoms/typography/Heading';
-import ProductList, { IList } from '../components/organisms/product/List';
+import ProductList from '../components/organisms/product/List';
 import { fetchList as fetchListProducts } from '../api/products';
+import useIntersectionObserver from '../hooks/useIntersectionObserver';
+import { useRef } from 'react';
 
-interface IIdexPageProps extends ITemplateProps {
-  startProducts: IList;
-  startTotalPages: number
-};
+const fetchListProductsQueryFn = ({ pageParam = 1 }) => fetchListProducts(pageParam || 1);
 
-const IndexPage: NextPage<IIdexPageProps> = ({ startProducts, startTotalPages }) => {
-  const [products, setProducts] = useState(startProducts);
-  const [totalPages, setTotalPages] = useState(startTotalPages);
-  const [page, setPage] = useState(1);
+const IndexPage: NextPage<IBasePageProps> = () => {
+  const loadMoreRef = useRef();
 
-  const loadMore = useCallback(async () => {
-    const nextPage = page + 1;
-    const resp = await fetchListProducts(nextPage);
-    setProducts(prevValue => [...prevValue, ...resp.data]);
-    setTotalPages(resp.meta.totalPages);
-    setPage(nextPage);
-  }, [page]);
+  const { isSuccess, data, isFetchingNextPage, hasNextPage, fetchNextPage } = useInfiniteQuery('products', fetchListProductsQueryFn, {
+    getNextPageParam: (lastPage, pages) => lastPage.meta.totalPages > pages.length ? pages.length + 1 : undefined
+  });
+
+  useIntersectionObserver({
+    enabled: !isFetchingNextPage && hasNextPage,
+    callback: fetchNextPage,
+    target: loadMoreRef
+  });
 
   return <>
     <Heading size={1} className="text-center mt-36 sm:mt-48">Star Wars<br />Figures</Heading>
@@ -33,27 +32,29 @@ const IndexPage: NextPage<IIdexPageProps> = ({ startProducts, startTotalPages })
       ">
       Find the latest products for the biggest fans of the iconic saga.
     </Heading>
-    <InfiniteScroll
-      dataLength={products.length}
-      hasMore={totalPages > page}
-      next={loadMore}
-      loader={null}
-      >
-        <ProductList products={products} />
-    </InfiniteScroll>
+    
+    { isSuccess &&
+      <>
+        <ProductList products={ data.pages.map(item => item.data) } />
+        <div ref={loadMoreRef} className="text-center">
+          { isFetchingNextPage && <span className="mt-6 inline-block">Loading...</span> }
+        </div>
+      </>
+    }
   </>;
 };
 
 export default IndexPage;
 
-export const getServerSideProps: GetServerSideProps<IIdexPageProps> = async function() {
-  const resp = await fetchListProducts();
+export const getServerSideProps: GetServerSideProps<IBasePageProps> = async function() {
+  const queryClient = new QueryClient();
 
+  await queryClient.prefetchInfiniteQuery('products', fetchListProductsQueryFn);
+  
   return {
     props: {
       pageTitle: 'Index page',
-      startProducts: resp.data,
-      startTotalPages: resp.meta.totalPages
+      queryData: JSON.parse(JSON.stringify(dehydrate(queryClient)))
     }
   };
 }
