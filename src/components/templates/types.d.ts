@@ -1,3 +1,3 @@
-export type ITemplateProps = {
+export interface ITemplateProps {
     pageTitle?: string
 }
