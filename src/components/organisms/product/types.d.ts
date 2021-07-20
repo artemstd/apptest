@@ -24,8 +24,10 @@ export interface IListProps {
 export interface IOrderFormProps {
     productId: number,
     className?: string
-} 
+}
 
-export type IFormikProps = FormikConfig<{
+interface IFormikValues {
     email: string
-}>;
+};
+
+export type IFormikProps = FormikConfig<IFormikValues>;

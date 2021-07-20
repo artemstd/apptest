@@ -9,30 +9,35 @@ import ErrMessage from '../../atoms/form/ErrMessage';
 import { create as createPreOrder } from '../../../api/pre-order';
 import { IErrorResponse } from '../../../api/client';
 import { IOrderFormProps, IFormikProps } from './types';
+import { useMutation } from 'react-query';
 
 const validationSchema = yup.object().shape({
     email: yup.string().email('Invalid email adress').required('Required email')
 });
 
 const OrderForm: FC<IOrderFormProps> = ({ productId, className }) => {
-    const handleSubmit = useCallback<IFormikProps['onSubmit']>(async (values, { setSubmitting, setErrors, resetForm }) => {
-        try {
-            const resp = await createPreOrder({
-                ...values,
-                productId
-            });
-            resetForm();
-            toast.success(resp.data.message);
-        } catch(exception) {
-            const e: IErrorResponse = exception;
-            if (e.errors) {
-                setErrors(e.errors);
-            } else {
-                toast.error(e.error || 'Error has occured');
+    const mutation = useMutation(createPreOrder);
+
+    const handleSubmit = useCallback<IFormikProps['onSubmit']>((values, { setSubmitting, setErrors, resetForm }) => {
+        mutation.mutate({
+            ...values,
+            productId
+        }, {
+            onSuccess: (resp) => {
+                resetForm();
+                toast.success(resp.data.message);
+            },
+            onError: (error: IErrorResponse) => {
+                if (error.errors) {
+                    setErrors(error.errors);
+                } else {
+                    toast.error(error.error || 'Error has occured');
+                }
+            },
+            onSettled: () => {
+                setSubmitting(false);
             }
-        }
-    
-        setSubmitting(false);
+        });
     }, [productId]);
 
     const formikProps: IFormikProps = {
