@@ -5,19 +5,7 @@ import Link from '../../atoms/link/Link';
 import Heading from '../../atoms/typography/Heading';
 import Paragraph from '../../atoms/typography/Paragraph';
 import BlockGray from '../../wrapper/BlockGray';
-
-interface IItem {
-    id: number,
-    image: string,
-    name: string,
-    shortDescription: string,
-    description: string,
-    price: number
-};
-
-interface IItemProps {
-    product: IItem
-};
+import { IItemProps } from './types';
 
 const Item: FC<IItemProps> = ({ product }) => {
     return <BlockGray className="flex flex-col text-center px-10 py-6 sm:py-10">
@@ -31,5 +19,3 @@ const Item: FC<IItemProps> = ({ product }) => {
 };
 
 export default memo(Item);
-
-export type { IItem }

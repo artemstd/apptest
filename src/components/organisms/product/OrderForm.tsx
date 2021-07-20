@@ -1,5 +1,5 @@
 import { FC, useCallback } from 'react';
-import { Formik, Form, FormikConfig } from 'formik';
+import { Formik, Form } from 'formik';
 import * as yup from 'yup';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -7,22 +7,12 @@ import Button from '../../atoms/button/Button';
 import TextField from '../../atoms/form/TextField';
 import ErrMessage from '../../atoms/form/ErrMessage';
 import { create as createPreOrder } from '../../../api/pre-order';
-import type { IErrorResponse } from '../../../api/client';
+import { IErrorResponse } from '../../../api/client';
+import { IOrderFormProps, IFormikProps } from './types';
 
 const validationSchema = yup.object().shape({
     email: yup.string().email('Invalid email adress').required('Required email')
 });
-
-interface IOrderFormProps {
-    productId: number,
-    className?: string
-}
-
-interface IFormValues {
-    email: string
-}
-
-type IFormikProps = FormikConfig<IFormValues>;
 
 const OrderForm: FC<IOrderFormProps> = ({ productId, className }) => {
     const handleSubmit = useCallback<IFormikProps['onSubmit']>(async (values, { setSubmitting, setErrors, resetForm }) => {

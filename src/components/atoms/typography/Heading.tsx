@@ -1,8 +1,5 @@
-import { FC, HTMLAttributes } from 'react';
-
-interface IHeadingProps extends HTMLAttributes<HTMLHeadingElement> {
-    size?: 1 | 2 | 3 | 4 | 5 | 6
-};
+import { FC } from 'react';
+import { IHeadingProps } from './types';
 
 const Heading: FC<IHeadingProps> = ({ size, className, children }) => {
     const TagName = `h${size}` as keyof JSX.IntrinsicElements;

@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import Head from 'next/head';
 import Header from '../organisms/header/Header';
-import type { ITemplateProps } from './types';
+import { ITemplateProps } from './types';
 
 const Default: FC<ITemplateProps> = ({ pageTitle, children }) => {
     return <>

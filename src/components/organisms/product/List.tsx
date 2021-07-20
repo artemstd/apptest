@@ -1,13 +1,6 @@
 import { FC, memo } from 'react';
-import ProductItem, { IItem } from './Item';
-
-type IList = IItem[];
-
-type IListPages = (IItem | IList)[];
-
-interface IListProps {
-    products: IListPages
-}
+import ProductItem from './Item';
+import { IListPages, IListProps } from './types';
 
 const MapList = (products: IListPages) => products.map(item => item instanceof Array ? MapList(item) : <ProductItem key={item.id} product={item} />);
 
@@ -22,5 +15,3 @@ const List: FC<IListProps> = ({ products }) => {
 }
 
 export default memo(List);
-
-export type { IItem, IList };
