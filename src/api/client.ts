@@ -1,17 +1,4 @@
-interface IRequestPartialConfig {
-    body?: {
-        [key: string]: string | number | boolean | void
-    }
-}
-
-type IRequestConfig = Omit<RequestInit, keyof IRequestPartialConfig> & IRequestPartialConfig;
-
-interface IErrorResponse {
-    error?: string;
-    errors?: {
-        [key: string]: string
-    };
-}
+import { IRequestConfig } from './types';
 
 const apiUrl: string = process.env.API_URL;
 
@@ -48,5 +35,3 @@ client.post = <T>(url: string, body?: IRequestConfig['body'], config?: Omit<IReq
 };
 
 export default client;
-
-export type { IErrorResponse };
