@@ -1,5 +1,16 @@
 import { IItem, IList } from '../../components/organisms/product/types';
 
+export interface IItem {
+    id: number,
+    image: string,
+    name: string,
+    shortDescription: string,
+    description: string,
+    price: number
+};
+
+export type IList = IItem[];
+
 export interface IFetchListResponse {
     data: IList,
     meta: {
