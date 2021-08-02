@@ -11,6 +11,7 @@
     "classnames": "^2.3.1",
     "formik": "^2.2.9",
     "next": "latest",
+    "node-abort-controller": "^2.0.0",
     "react": "latest",
     "react-dom": "latest",
     "react-infinite-scroll-component": "^6.1.0",
