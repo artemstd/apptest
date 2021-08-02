@@ -2,7 +2,6 @@ import client from '../client';
 import { IFetchListResponse, IFetchOneResponse } from './types';
 
 export const fetchList = (page: number = 1) => {
-    console.log('fetch')
     return client.get<IFetchListResponse>(`/api/products?page=${page}`);
 };
 

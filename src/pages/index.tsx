@@ -11,7 +11,6 @@ import { useRef } from 'react';
 const fetchListProductsQueryFn: QueryFunction<ReturnType<typeof fetchListProducts> extends Promise<infer T> ? T : any> = ({ pageParam = 1 }) => fetchListProducts(pageParam || 1);
 
 const IndexPage: NextPage<IBasePageProps> = () => {
-  console.log('render')
   const loadMoreRef = useRef();
 
   const { isSuccess, data, isFetchingNextPage, hasNextPage, fetchNextPage } = useInfiniteQuery('products', fetchListProductsQueryFn, {

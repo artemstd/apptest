@@ -10,8 +10,7 @@ const App: NextPage<IAppPageProps<IBasePageProps>> = ({ Component, pageProps }) 
     const [ queryClient ] = useState(() => new QueryClient({
         defaultOptions: {
             queries: {
-                staleTime: 0,
-                refetchOnWindowFocus: false
+                staleTime: 60000
             }
         }
     }));
