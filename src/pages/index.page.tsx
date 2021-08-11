@@ -4,7 +4,7 @@ import { dehydrate } from 'react-query/hydration';
 import { IBasePageProps } from './types';
 import Heading from '../components/atoms/typography/Heading';
 import ProductList from '../components/organisms/product/List';
-import { fetchList as fetchListProducts } from '../api/products';
+// TODO import { fetchList as fetchListProducts } from '../api/products';
 import useIntersectionObserver from '../hooks/useIntersectionObserver';
 import { useRef } from 'react';
 

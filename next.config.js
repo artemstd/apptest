@@ -6,5 +6,5 @@ module.exports = {
     loader: 'imgix',
     path: 'https://react-test-starwars.vercel.app'
   },
-  pageExtensions: ['tsx']
+  pageExtensions: ['page.tsx', 'page.ts']
 }

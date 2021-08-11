@@ -1,4 +1,4 @@
-import { IItem, IList } from '../../../api/products/types';
+import { IItem, IList } from '../../../api/product/types';
 import { FormikConfig } from 'formik';
 
 export interface IItemProps {

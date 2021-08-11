@@ -1,11 +1,16 @@
-interface IRequestPartialConfig {
-    body?: {
-        [key: string]: string | number | boolean | void
-    }
+import type PreOrder from "./pre-order/dataSource";
+import type Product from "./product/dataSource";
+
+export type IDataSources = {
+    product: Product,
+    preOrder: PreOrder
 }
 
-export type IRequestConfig = Omit<RequestInit, keyof IRequestPartialConfig> & IRequestPartialConfig;
+export interface IContext {
+    dataSources: IDataSources
+}
 
+// todo
 export interface IErrorResponse {
     error?: string;
     errors?: {

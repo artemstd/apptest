@@ -7,6 +7,7 @@ import Heading from '../../components/atoms/typography/Heading';
 import Paragraph from '../../components/atoms/typography/Paragraph';
 import BlockGray from '../../components/wrapper/BlockGray';
 import OrderForm from '../../components/organisms/product/OrderForm';
+// todo
 import { fetchOne as fetchOneProduct } from '../../api/products';
 import { IProductPageParams, IProductPageProps } from './types';
 
