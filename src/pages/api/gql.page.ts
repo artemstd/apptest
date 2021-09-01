@@ -1,5 +1,5 @@
 import { ApolloServer } from 'apollo-server-micro';
-import { typeDefs, resolvers, dataSources } from '../../api';
+import { typeDefs, resolvers, dataSources } from '../../schema';
 import { PageConfig } from 'next';
 
 const server = new ApolloServer({

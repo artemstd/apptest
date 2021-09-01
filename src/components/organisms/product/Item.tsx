@@ -4,7 +4,7 @@ import LinkNext from 'next/link';
 import Link from '../../atoms/link/Link';
 import Heading from '../../atoms/typography/Heading';
 import Paragraph from '../../atoms/typography/Paragraph';
-import BlockGray from '../../wrapper/BlockGray';
+import BlockGray from '../../wrappers/BlockGray';
 import { IItemProps } from './types';
 
 const Item: FC<IItemProps> = ({ product }) => {

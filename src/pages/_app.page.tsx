@@ -1,32 +1,30 @@
 import '../style.css';
 import Template from '../components/templates/Default';
-import { IAppPageProps, IBasePageProps } from './types';
-import { NextPage } from 'next';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { Hydrate } from 'react-query/hydration';
+import { IAppPageProps, IBasePageProps, IInitialBasePageProps } from './types';
+import { ApolloProvider} from '@apollo/client';
 import { useState } from 'react';
+import createApolloClient from '../client/create';
+import { AppContextType, NextComponentType } from 'next/dist/shared/lib/utils';
 
-const App: NextPage<IAppPageProps<IBasePageProps>> = ({ Component, pageProps }) => {
-    const [ queryClient ] = useState(() => new QueryClient({
-        defaultOptions: {
-            queries: {
-                staleTime: 60000,
-                notifyOnChangePropsExclusions: ['isFetching', 'isStale']
-            }
-        }
-    }));
+const App: NextComponentType<AppContextType, IInitialBasePageProps, IAppPageProps<IBasePageProps> & IInitialBasePageProps> = ({ Component, pageProps, host }) => {
+    const [ apolloClient ] = useState(() => createApolloClient(host));
     const { pageTitle, queryData } = pageProps;
-    return <QueryClientProvider client={queryClient}>
-        <Hydrate state={queryData}>
-            <Template pageTitle={pageTitle}>
-                <Component {...pageProps} />
-            </Template>
-        </Hydrate>
-    </QueryClientProvider>;
+    apolloClient.cache.restore(queryData);
+    return <ApolloProvider client={apolloClient}>    
+        <Template pageTitle={pageTitle}>
+            <Component {...pageProps} />
+        </Template>
+    </ApolloProvider>;
 };
 
 App.defaultProps = {
     pageProps: {}
 };
+
+App.getInitialProps = async function({ ctx: { req } }) {
+    return {
+        host: req.headers.host
+    }
+}
 
 export default App;

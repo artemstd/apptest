@@ -5,9 +5,12 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "download-schema": "apollo service:download --endpoint=http://localhost:3000/api/gql graphql-schema.json",
+    "codegen": "npm run download-schema && apollo codegen:generate --localSchemaFile=graphql-schema.json --target=typescript --tsFileExtension='d.ts' --tagName=gql types && rm graphql-schema.json"
   },
   "dependencies": {
+    "@apollo/client": "^3.4.9",
     "apollo-datasource-rest": "^3.1.1",
     "apollo-server-micro": "^2.25.2",
     "classnames": "^2.3.1",
@@ -16,14 +19,15 @@
     "lodash": "^4.17.21",
     "next": "latest",
     "node-abort-controller": "^2.0.0",
-    "react": "latest",
+    "react": "^17.0.2",
     "react-dom": "latest",
-    "react-query": "^3.19.0",
     "react-toastify": "^7.0.4",
     "yup": "^0.32.9"
   },
   "devDependencies": {
+    "@types/graphql": "^14.5.0",
     "@types/react": "^17.0.13",
+    "apollo": "^2.33.6",
     "autoprefixer": "^10.2.6",
     "postcss": "^8.3.2",
     "tailwindcss": "^2.1.4",

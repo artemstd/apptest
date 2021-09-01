@@ -5,10 +5,10 @@ import { dehydrate } from 'react-query/hydration';
 import ProductList from '../../components/organisms/product/List';
 import Heading from '../../components/atoms/typography/Heading';
 import Paragraph from '../../components/atoms/typography/Paragraph';
-import BlockGray from '../../components/wrapper/BlockGray';
+import BlockGray from '../../components/wrappers/BlockGray';
 import OrderForm from '../../components/organisms/product/OrderForm';
 // todo
-import { fetchOne as fetchOneProduct } from '../../api/products';
+import { fetchOne as fetchOneProduct } from '../../schema/products';
 import { IProductPageParams, IProductPageProps } from './types';
 
 const fetchOneProductQueryFn: QueryFunction<ReturnType<typeof fetchOneProduct> extends Promise<infer T> ? T : any> = ({ queryKey }) => fetchOneProduct(typeof queryKey[1] === 'number' ? queryKey[1] : undefined);

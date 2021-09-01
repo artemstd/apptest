@@ -1,24 +1,41 @@
 import { GetServerSideProps, NextPage } from 'next';
-import { QueryClient, QueryFunction, useInfiniteQuery } from 'react-query';
-import { dehydrate } from 'react-query/hydration';
 import { IBasePageProps } from './types';
 import Heading from '../components/atoms/typography/Heading';
 import ProductList from '../components/organisms/product/List';
-// TODO import { fetchList as fetchListProducts } from '../api/products';
 import useIntersectionObserver from '../hooks/useIntersectionObserver';
-import { useRef } from 'react';
+import { useCallback, useRef, useState } from 'react';
+import { GET_PRODUCTS_LIST } from '../client/queries/product';
+import { GetProductsList, GetProductsListVariables } from '../client/queries/product/types/GetProductsList';
+import { useQuery } from '@apollo/client';
+import createApolloClient from '../client/create';
 
-const fetchListProductsQueryFn: QueryFunction<ReturnType<typeof fetchListProducts> extends Promise<infer T> ? T : any> = ({ pageParam = 1 }) => fetchListProducts(pageParam || 1);
+const startPage = 1;
 
 const IndexPage: NextPage<IBasePageProps> = () => {
-  const loadMoreRef = useRef();
-
-  const { isSuccess, data, isFetchingNextPage, hasNextPage, fetchNextPage } = useInfiniteQuery('products', fetchListProductsQueryFn, {
-    getNextPageParam: (lastPage, pages) => lastPage.meta.totalPages > pages.length ? pages.length + 1 : undefined
+  const [ page, setPage ] = useState(startPage);
+  const [ isLoadingMore, setIsLoaingMore ] = useState(false);
+  const { data, fetchMore, loading } = useQuery<GetProductsList, GetProductsListVariables>(GET_PRODUCTS_LIST, {
+    variables: {
+      page: startPage
+    }
   });
 
+  const loadMoreRef = useRef();
+
+  const fetchNextPage = useCallback(async () => {
+    const nextPage = page + 1;
+    setIsLoaingMore(true);
+    await fetchMore({
+      variables: {
+        page: nextPage
+      }
+    });
+    setIsLoaingMore(false);
+    setPage(nextPage);
+  }, [page]);
+
   useIntersectionObserver({
-    enabled: !isFetchingNextPage && hasNextPage,
+    enabled: !loading && !isLoadingMore && data?.fetchList.meta.hasMore,
     callback: fetchNextPage,
     target: loadMoreRef
   });
@@ -33,11 +50,11 @@ const IndexPage: NextPage<IBasePageProps> = () => {
       Find the latest products for the biggest fans of the iconic saga.
     </Heading>
     
-    { isSuccess &&
+    { data &&
       <>
-        <ProductList products={ data.pages.map(item => item.data) } />
+        <ProductList products={ data.fetchList.data } />
         <div ref={loadMoreRef} className="text-center">
-          { isFetchingNextPage && <span className="mt-6 inline-block">Loading...</span> }
+          { isLoadingMore && <span className="mt-6 inline-block">Loading...</span> }
         </div>
       </>
     }
@@ -46,15 +63,19 @@ const IndexPage: NextPage<IBasePageProps> = () => {
 
 export default IndexPage;
 
-export const getServerSideProps: GetServerSideProps<IBasePageProps> = async function() {
-  const queryClient = new QueryClient();
+export const getServerSideProps: GetServerSideProps<IBasePageProps> = async function({ req }) {
+  const apolloClient = createApolloClient(req.headers.host);
+  await apolloClient.query({
+    query: GET_PRODUCTS_LIST,
+    variables: {
+      page: startPage
+    }
+  });
 
-  await queryClient.prefetchInfiniteQuery('products', fetchListProductsQueryFn);
-  
   return {
     props: {
       pageTitle: 'Index page',
-      queryData: JSON.parse(JSON.stringify(dehydrate(queryClient)))
+      queryData: apolloClient.extract()
     }
   };
 }

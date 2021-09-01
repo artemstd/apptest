@@ -1,11 +1,11 @@
 export default `
     type Product {
         id: Int!
-        image: String
+        image: String!
         name: String!
-        shortDescription: String
-        description: String
-        price: Float
+        shortDescription: String!
+        description: String!
+        price: Float!
     }
 
     type ResponseFetchListMeta {
@@ -19,7 +19,7 @@ export default `
 
     type ResponseFetchOneData {
         product: Product!,
-        relatedProducts: [Product!]
+        relatedProducts: [Product!]!
     }
 
     type ResponseFetchOne {
@@ -28,6 +28,6 @@ export default `
 
     extend type Query {
         fetchList(page: Int): ResponseFetchList!
-        fetchOne(id: Int): ResponseFetchOne!
+        fetchOne(id: Int!): ResponseFetchOne!
     }
 `;

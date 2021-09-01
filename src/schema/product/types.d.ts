@@ -3,9 +3,12 @@ export interface IItem {
     image: string,
     name: string,
     shortDescription: string,
-    description: string,
     price: number
 };
+
+export interface IItemDetails extends IItem {
+    description: string
+}
 
 export type IList = IItem[];
 
@@ -18,7 +21,7 @@ export interface IFetchListResponse {
 
 export interface IFetchOneResponse {
     data: {
-        product: IItem,
+        product: IItemDetails,
         relatedProducts?: IList
     }
 }

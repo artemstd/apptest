@@ -1,14 +1,12 @@
-import { IItem, IList } from '../../../api/product/types';
+import { IItemDetails, IList } from '../../../schema/product/types';
 import { FormikConfig } from 'formik';
 
 export interface IItemProps {
-    product: IItem
+    product: IItemDetails
 };
 
-export type IListPages = (IItem | IList)[];
-
 export interface IListProps {
-    products: IListPages
+    products: IList
 }
 
 export interface IOrderFormProps {
