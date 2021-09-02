@@ -5,7 +5,7 @@ import { IBasePageProps } from './types';
 import Heading from '../components/atoms/typography/Heading';
 import ProductList from '../components/organisms/product/List';
 import { fetchList as fetchListProducts } from '../api/products';
-import useIntersectionObserver from '../hooks/useIntersectionObserver';
+import useIntersectionObserver from '../utils/useIntersectionObserver';
 import { useRef } from 'react';
 
 const fetchListProductsQueryFn: QueryFunction<ReturnType<typeof fetchListProducts> extends Promise<infer T> ? T : any> = ({ pageParam = 1 }) => fetchListProducts(pageParam || 1);
