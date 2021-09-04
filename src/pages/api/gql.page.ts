@@ -1,5 +1,5 @@
 import { ApolloServer } from 'apollo-server-micro';
-import { typeDefs, resolvers, dataSources } from '../../schema';
+import { typeDefs, resolvers, dataSources } from '../../graphql/schema';
 import { PageConfig } from 'next';
 
 const server = new ApolloServer({

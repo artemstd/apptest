@@ -7,6 +7,11 @@
 // START Enums and Input Objects
 //==============================================================
 
+export interface DataInput {
+  productId: number;
+  email: string;
+}
+
 //==============================================================
 // END Enums and Input Objects
 //==============================================================

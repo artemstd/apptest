@@ -7,10 +7,10 @@
     "build": "next build",
     "start": "next start",
     "download-schema": "apollo service:download --endpoint=http://localhost:3000/api/gql graphql-schema.json",
-    "codegen": "npm run download-schema && apollo codegen:generate --localSchemaFile=graphql-schema.json --target=typescript --tsFileExtension='d.ts' --tagName=gql types && rm graphql-schema.json"
+    "codegen": "npm run download-schema && apollo codegen:generate --localSchemaFile=graphql-schema.json --target=typescript --tsFileExtension='d.ts' --tagName=gql --globalTypesFile='src/graphql/client/queries/__generated_types__/global.d.ts' __generated_types__ && rmdir __generated_types__ && rm graphql-schema.json"
   },
   "dependencies": {
-    "@apollo/client": "^3.4.9",
+    "@apollo/client": "^3.4.8",
     "apollo-datasource-rest": "^3.1.1",
     "apollo-server-micro": "^2.25.2",
     "classnames": "^2.3.1",

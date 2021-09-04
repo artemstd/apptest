@@ -1,7 +1,7 @@
 import { RefObject, useEffect } from "react";
 
 interface IParams extends Omit<IntersectionObserverInit, 'root'> {
-    callback: () => void,
+    callback: () => any,
     enabled: boolean,
     target: RefObject<Element>,
     root?: RefObject<Element | Document | null>

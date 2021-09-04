@@ -1,8 +1,8 @@
-import { IItemDetails, IList } from '../../../schema/product/types';
+import { IItem, IList } from '../../../graphql/schema/product/types';
 import { FormikConfig } from 'formik';
 
 export interface IItemProps {
-    product: IItemDetails
+    product: IItem
 };
 
 export interface IListProps {

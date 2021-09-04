@@ -6,39 +6,47 @@ import 'react-toastify/dist/ReactToastify.css';
 import Button from '../../atoms/button/Button';
 import TextField from '../../atoms/form/TextField';
 import ErrMessage from '../../atoms/form/ErrMessage';
-// todo
-import { create as createPreOrder } from '../../../schema/pre-order/dataSource';
-import { IErrorResponse } from '../../../schema/types';
+import { IErrorResponse } from '../../../graphql/schema/types';
 import { IOrderFormProps, IFormikProps } from './types';
-import { useMutation } from 'react-query';
+import { useMutation } from '@apollo/client';
+import { CreatePreOrder, CreatePreOrderVariables } from '../../../graphql/client/queries/pre-order/__generated_types__/CreatePreOrder';
+import { CREATE_PRE_ORDER } from '../../../graphql/client/queries/pre-order';
 
 const validationSchema = yup.object().shape({
     email: yup.string().email('Invalid email adress').required('Required email')
 });
 
 const OrderForm: FC<IOrderFormProps> = ({ productId, className }) => {
-    const mutation = useMutation(createPreOrder);
+    const [ mutate ] = useMutation<CreatePreOrder, CreatePreOrderVariables>(CREATE_PRE_ORDER);
 
     const handleSubmit = useCallback<IFormikProps['onSubmit']>((values, { setSubmitting, setErrors, resetForm }) => {
-        mutation.mutate({
-            ...values,
-            productId
-        }, {
-            onSuccess: (resp) => {
-                resetForm();
-                toast.success(resp.data.message);
-            },
-            onError: (error: IErrorResponse) => {
-                if (error.errors) {
-                    setErrors(error.errors);
-                } else {
-                    toast.error(error.error || 'Error has occured');
+        mutate({
+            variables: {
+                data: {
+                    ...values,
+                    productId
                 }
-            },
-            onSettled: () => {
-                setSubmitting(false);
             }
-        });
+        }).then(
+            ({ data: { create: { data } } }) => {
+                resetForm();
+                toast.success(data.message);
+            }
+        ).catch(({ networkError, graphQLErrors }) => {
+            if (networkError) {
+                toast.error(networkError.toString());
+                console.error(networkError.toString());
+            } else if (graphQLErrors) {
+                const { errors, error }: IErrorResponse = graphQLErrors[0]?.extensions?.response?.body || {};
+                if (errors) {
+                    setErrors(errors);
+                } else {
+                    toast.error(error || 'Error has occured');
+                }
+            }
+        }).finally(() => {
+            setSubmitting(false);
+        })
     }, [productId]);
 
     const formikProps: IFormikProps = {

@@ -1,25 +1,27 @@
 import { GetServerSideProps, NextPage } from 'next';
 import Image from 'next/image';
-import { QueryClient, QueryFunction, useQuery } from 'react-query';
-import { dehydrate } from 'react-query/hydration';
 import ProductList from '../../components/organisms/product/List';
 import Heading from '../../components/atoms/typography/Heading';
 import Paragraph from '../../components/atoms/typography/Paragraph';
 import BlockGray from '../../components/wrappers/BlockGray';
 import OrderForm from '../../components/organisms/product/OrderForm';
-// todo
-import { fetchOne as fetchOneProduct } from '../../schema/products';
 import { IProductPageParams, IProductPageProps } from './types';
-
-const fetchOneProductQueryFn: QueryFunction<ReturnType<typeof fetchOneProduct> extends Promise<infer T> ? T : any> = ({ queryKey }) => fetchOneProduct(typeof queryKey[1] === 'number' ? queryKey[1] : undefined);
+import createApolloClient from '../../graphql/client/create';
+import { GET_PRODUCT_ONE } from '../../graphql/client/queries/product';
+import { GetProductOne, GetProductOneVariables } from '../../graphql/client/queries/product/__generated_types__/GetProductOne';
+import { useQuery } from '@apollo/client';
 
 const ProductPage: NextPage<IProductPageProps> = ({ id }) => {
-    const { data, isSuccess } = useQuery(['products', id], fetchOneProductQueryFn);
+    const { data } = useQuery<GetProductOne, GetProductOneVariables>(GET_PRODUCT_ONE, {
+        variables: {
+            id
+        }
+    });
 
-    if (!isSuccess) {
+    if ( !data ) {
         return;
     }
-    const { product, relatedProducts } = data.data;
+    const { product, relatedProducts } = data.fetchOne.data;
 
     return <>
         <BlockGray className="grid grid-cols-1 xl:grid-cols-2 py-10 md:py-20 mt-9">
@@ -39,17 +41,22 @@ const ProductPage: NextPage<IProductPageProps> = ({ id }) => {
 
 export default ProductPage;
 
-export const getServerSideProps: GetServerSideProps<IProductPageProps, IProductPageParams> = async function({ params }) {
+export const getServerSideProps: GetServerSideProps<IProductPageProps, IProductPageParams> = async function({ params, req }) {
     try {
-        const queryClient = new QueryClient();
+        const apolloClient = createApolloClient(req.headers.host);
 
-        const resp = await queryClient.fetchQuery(['products', +params.id], fetchOneProductQueryFn);
+        const { data } = await apolloClient.query<GetProductOne, GetProductOneVariables>({
+            query: GET_PRODUCT_ONE,
+            variables: {
+                id: +params.id
+            }
+        });
 
         return {
             props: {
-                pageTitle: `Buy "${resp.data.product.name}"`,
+                pageTitle: `Buy "${data.fetchOne.data.product.name}"`,
                 id: +params.id,
-                queryData: dehydrate(queryClient)
+                queryData: apolloClient.extract()
             }
         };
     } catch(exception) {

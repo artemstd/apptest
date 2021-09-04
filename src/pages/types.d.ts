@@ -1,4 +1,3 @@
-import { NextPageContext } from 'next';
 import { AppProps } from 'next/app';
 import { ITemplateProps } from '../components/templates/types';
 

@@ -2,18 +2,18 @@ import { GetServerSideProps, NextPage } from 'next';
 import { IBasePageProps } from './types';
 import Heading from '../components/atoms/typography/Heading';
 import ProductList from '../components/organisms/product/List';
-import useIntersectionObserver from '../hooks/useIntersectionObserver';
+import useIntersectionObserver from '../utils/useIntersectionObserver';
 import { useCallback, useRef, useState } from 'react';
-import { GET_PRODUCTS_LIST } from '../client/queries/product';
-import { GetProductsList, GetProductsListVariables } from '../client/queries/product/types/GetProductsList';
+import { GET_PRODUCTS_LIST } from '../graphql/client/queries/product';
+import { GetProductsList, GetProductsListVariables } from '../graphql/client/queries/product/__generated_types__/GetProductsList';
 import { useQuery } from '@apollo/client';
-import createApolloClient from '../client/create';
+import createApolloClient from '../graphql/client/create';
 
 const startPage = 1;
 
 const IndexPage: NextPage<IBasePageProps> = () => {
-  const [ page, setPage ] = useState(startPage);
-  const [ isLoadingMore, setIsLoaingMore ] = useState(false);
+  const [ page, setPage ] = useState<number>(startPage);
+  const [ isLoadingMore, setIsLoaingMore ] = useState<boolean>(false);
   const { data, fetchMore, loading } = useQuery<GetProductsList, GetProductsListVariables>(GET_PRODUCTS_LIST, {
     variables: {
       page: startPage
@@ -65,7 +65,7 @@ export default IndexPage;
 
 export const getServerSideProps: GetServerSideProps<IBasePageProps> = async function({ req }) {
   const apolloClient = createApolloClient(req.headers.host);
-  await apolloClient.query({
+  await apolloClient.query<GetProductsList, GetProductsListVariables>({
     query: GET_PRODUCTS_LIST,
     variables: {
       page: startPage
